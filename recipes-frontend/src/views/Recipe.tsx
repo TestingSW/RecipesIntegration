@@ -5,6 +5,7 @@ import RecipeDetail from '../components/RecipeDetail';
 import { Stack } from '@mui/system';
 import { Button } from '@mui/material';
 import {recipe} from "../typeDefs"
+import Api from '../model/api';
 
 type recipeProps = {
 
@@ -12,7 +13,7 @@ type recipeProps = {
 
 interface recipeState {
     recipes: recipe[],
-    target: number | null,
+    target?: recipe,
     state: "list" | "view" | "edit" | "create" | "delete" 
 
 }
@@ -23,45 +24,45 @@ class Recipe extends React.Component<recipeProps, recipeState> {
     constructor(props:recipeProps) {
         super(props);
         // No llames this.setState() aquí!
-        this.state = { recipes: [], target: null, state: "list"};
+        this.state = { recipes: [], target: undefined, state: "list"};
       }
-    editRecipe(e: any, id:number) {
+    editRecipe(e: any, id:string) {
       e.stopPropagation()
-      this.setState({state:"edit", target: id})
+      let recipe = this.state.recipes.find(recipe => recipe._id! == id)
+      this.setState({state:"edit", target: recipe})
     }
-    viewRecipe(e: any, id:number) {
+    viewRecipe(e: any, id:string) {
       e.stopPropagation()
-      this.setState({state: "view", target: id})
+      let recipe = this.state.recipes.find(recipe => recipe._id! == id)
+      this.setState({state: "view", target: recipe})
     }
-    deleteRecipe(e: any, id:number) {
+    async deleteRecipe(e: any, id:string) {
       e.stopPropagation()
-      let recipes = this.state.recipes
+      console.log(id)
+      await Api.deleteRecipe(id);
+      this.updateList();      
+    }
 
-      let newRecipes = recipes.filter(recipe => recipe.id != id)
-      this.setState({recipes: newRecipes})
-      
-    }
-    showList(e: any,  isNew: boolean, wasCancelled: boolean, recipe?: recipe) {
+    updateList = async () => {
+      let recipes = await Api.getRecipes();
+      console.log(recipes)
+      this.setState({recipes: recipes})
+
+  }
+
+    async showList(e: any,  isNew: boolean, wasCancelled: boolean, recipe?: recipe) {
       e.stopPropagation()
       this.setState({state: "list"})
       if (!wasCancelled) {
-        let recipes = this.state.recipes
-        // se ve si se agrega o edita wea
-        if (isNew && recipe != undefined) {
-          recipe.id = this.state.recipes.length + 1
-          recipes.push(recipe)
-          this.setState({recipes: recipes})
-          // se agrega nueva receta
-
-        } else {
-          console.log("editando archivo")
-          console.log(this.state.target!)
-          // se edita receta anterior
-          recipe!.id = this.state.target! 
-          recipes[this.state.target! - 1 ] = recipe!
-          this.setState({recipes: recipes})
-        }
+      if (isNew) {
+        await Api.postRecipe(recipe!)
+      } else {
+        console.log("probando")
+        console.log(recipe)
+        await Api.updateRecipe(recipe!);
       }
+      this.updateList();
+    }
       
     }
     createRecipe(e: any) {
@@ -79,8 +80,10 @@ class Recipe extends React.Component<recipeProps, recipeState> {
         
       <Stack spacing={2}>
         <Button onClick={this.createR} >Crear nueva receta</Button>
+        <Button onClick={this.updateList} >Actualizar</Button>
+
         <RecipeList recipes={this.state.recipes} deleteRecipe={this.deleteR} editRecipe={this.editR} viewRecipe={this.viewR}/>
-        {(() => {if (this.state.state !== "delete") return <RecipeDetail recipeData={this.state.recipes[this.state.target! - 1]} mode={this.state.state} handleClose={this.showL}/>}) ()}
+        {(() => {if (this.state.state !== "delete") return <RecipeDetail recipeData={this.state.target!} mode={this.state.state} handleClose={this.showL}/>}) ()}
       </Stack>
         
         

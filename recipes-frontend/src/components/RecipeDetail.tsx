@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import * as React from 'react';
-import { recipe } from '../typeDefs';
+import { ingredient, recipe } from '../typeDefs';
 import Recipe from '../views/Recipe';
 
 
@@ -11,10 +11,7 @@ interface detailProps {
 }
 
 interface detailState {
- name: string,
- ingredients: string,
- instructions: string,
- id?: number
+  recipe: recipe,
 }
 export default class RecipeDetail extends React.Component<detailProps, detailState> {
    title = {
@@ -34,9 +31,15 @@ export default class RecipeDetail extends React.Component<detailProps, detailSta
   constructor(props:detailProps) {
     super(props)
     console.log(props.recipeData)
-    this.state= {ingredients: "", instructions: "", name: ""}
+    let recipeNull:recipe = {
+      ingredients: [],
+      steps: [],
+      title: "",
+
+    }
+    this.state= {recipe:recipeNull}
     if (props.recipeData != undefined) {
-      this.state = {...props.recipeData}
+      this.state = {recipe: props.recipeData}
     }
  }
 
@@ -44,7 +47,7 @@ export default class RecipeDetail extends React.Component<detailProps, detailSta
 console.log(this.props.recipeData, prevProps.recipeData)
     if (this.props.recipeData != undefined) {
       if (prevProps.recipeData != undefined) {
-        if ( this.props.recipeData.id != prevProps.recipeData.id)
+        if ( this.props.recipeData._id != prevProps.recipeData._id)
         this.updateAndNotify()
       } else
       this.updateAndNotify()
@@ -53,25 +56,34 @@ console.log(this.props.recipeData, prevProps.recipeData)
   
 updateAndNotify(){
   console.log(this.props.recipeData)
-  this.setState({...this.props.recipeData})
+  this.setState({recipe:this.props.recipeData})
 }
 
  handleChange(e:any) {
+  var outdatedRecipe: recipe = this.state.recipe;
   if (e.target.id === "ingredients") {
-    this.setState({ingredients: e.target.value})
+    var ing:[string] = e.target.value.split("\n")
+    outdatedRecipe.ingredients = ing.map(ingred => { return {name: ingred, quantity: 1} as ingredient})
+    this.setState({recipe:outdatedRecipe})
   } else if (e.target.id === "instructions") {
-    this.setState({instructions: e.target.value})
+    outdatedRecipe.steps = e.target.value.split("\n")
+
+    this.setState({recipe:outdatedRecipe})
+
   } else if (e.target.id === "name") {
-    this.setState({name: e.target.value})
+    outdatedRecipe.title = e.target.value
+    this.setState({recipe:outdatedRecipe})
+
   }
 }
 
 hc = this.handleChange.bind(this)
   doAction(e:any) {
     let recipe:recipe = {
-      name: this.state.name,
-      ingredients: this.state.ingredients,
-      instructions: this.state.instructions
+      title: this.state.recipe.title,
+      ingredients: this.state.recipe.ingredients,
+      steps: this.state.recipe.steps,
+      _id: this.state.recipe._id!,
     }
     
     if (this.props.mode === "create") {
@@ -102,7 +114,7 @@ hc = this.handleChange.bind(this)
             type=""
             disabled={disabled}
             fullWidth
-            value={this.state.name}
+            value={this.state.recipe.title}
             onChange={this.hc}
             variant="standard"
           />
@@ -118,7 +130,7 @@ hc = this.handleChange.bind(this)
 
             onChange={this.hc}
 
-            value={this.state.ingredients}
+            value={this.state.recipe.ingredients.map(ing => ing?.name).join("\n")}
             rows={2}
             variant="standard"
           />
@@ -133,7 +145,7 @@ hc = this.handleChange.bind(this)
             onChange={this.hc}
 
             type=""
-            value={this.state.instructions}
+            value={this.state.recipe.steps.join("\n")}
             fullWidth
             variant="standard"
           />

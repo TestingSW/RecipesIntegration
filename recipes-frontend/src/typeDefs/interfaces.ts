@@ -1,7 +1,12 @@
 export interface recipe {
-    id?: number
-    name: string,
-    ingredients: string,
-    instructions: string,
+    _id?: string
+    title: string,
+    ingredients: ingredient[],
+    steps: [string?],
     photo?: string,
+  }
+
+  export interface ingredient {
+    name: string,
+    quantity: Number,
   }
