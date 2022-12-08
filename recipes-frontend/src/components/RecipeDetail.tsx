@@ -44,7 +44,7 @@ export default class RecipeDetail extends React.Component<detailProps, detailSta
  }
 
  componentDidUpdate(prevProps:detailProps) {
-console.log(this.props.recipeData, prevProps.recipeData)
+  console.log(this.props.recipeData, prevProps.recipeData)
     if (this.props.recipeData != undefined) {
       if (prevProps.recipeData != undefined) {
         if ( this.props.recipeData._id != prevProps.recipeData._id)
@@ -173,7 +173,7 @@ hc = this.handleChange.bind(this)
         </DialogContent>
         <DialogActions>
           <Button onClick={this.doC}>Cancelar</Button>
-          <Button onClick={this.doA}>Guardar Receta</Button>
+          <Button id="submit" onClick={this.doA}>Guardar Receta</Button>
         </DialogActions>
       </Dialog>
     }
