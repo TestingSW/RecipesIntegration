@@ -21,6 +21,10 @@ async function createRecipe(req, res, next) {
 
 async function listRecipe(req, res, next) {
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE,OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Authorization');
+
         let response = await service.list(Recipe)
         res.status(200).json(util.successResponse(200, response))
     } catch (error) {

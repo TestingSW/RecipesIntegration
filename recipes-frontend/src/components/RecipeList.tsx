@@ -28,6 +28,7 @@ edit(e:any, id:string) {
 
 
 render() {
+
     return <TableContainer component={Card}>
         <Table>
             <TableHead>
@@ -41,15 +42,15 @@ render() {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {this.props.recipes.map((recipe) => <TableRow key={recipe._id} style={{cursor: 'pointer'}} onClick={(e:any) => this.view(e, recipe._id!)}>
+                {this.props.recipes.map((recipe,index) => <TableRow key={recipe._id} style={{cursor: 'pointer'}} onClick={(e:any) => this.view(e, recipe._id!)}>
                     <TableCell component="th">
                         {recipe.title}
                     </TableCell>
                     <TableCell >
-                        <Button fullWidth onClick={(e:any) => this.edit(e, recipe._id!)}>Editar</Button>
+                        <Button id={`updateRecipe${index.toString()}`} fullWidth onClick={(e:any) => this.edit(e, recipe._id!)}>Editar</Button>
                     </TableCell>
                     <TableCell>
-                        <Button fullWidth color="error" onClick={(e) => this.props.deleteRecipe(e, recipe._id!)} >Eliminar</Button>
+                        <Button id={`deleteRecipe${index.toString()}`} fullWidth color="error" onClick={(e) => this.props.deleteRecipe(e, recipe._id!)} >Eliminar</Button>
                     </TableCell>
                 </TableRow>
             )}

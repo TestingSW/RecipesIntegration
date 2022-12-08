@@ -79,8 +79,8 @@ class Recipe extends React.Component<recipeProps, recipeState> {
       return <Container style={{padding: "2rem"}}>
         
       <Stack spacing={2}>
-        <Button onClick={this.createR} >Crear nueva receta</Button>
-        <Button onClick={this.updateList} >Actualizar</Button>
+        <Button id="createRecipe" onClick={this.createR} >Crear nueva receta</Button>
+        <Button id="updateList" onClick={this.updateList} >Actualizar</Button>
 
         <RecipeList recipes={this.state.recipes} deleteRecipe={this.deleteR} editRecipe={this.editR} viewRecipe={this.viewR}/>
         {(() => {if (this.state.state !== "delete") return <RecipeDetail recipeData={this.state.target!} mode={this.state.state} handleClose={this.showL}/>}) ()}
