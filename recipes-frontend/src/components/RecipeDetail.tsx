@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import Image from 'mui-image';
 import * as React from 'react';
 import { ingredient, recipe } from '../typeDefs';
-import Recipe from '../views/Recipe';
 
 
 interface detailProps {
@@ -35,7 +35,7 @@ export default class RecipeDetail extends React.Component<detailProps, detailSta
       ingredients: [],
       steps: [],
       title: "",
-
+      img: ""
     }
     this.state= {recipe:recipeNull}
     if (props.recipeData != undefined) {
@@ -74,7 +74,11 @@ updateAndNotify(){
     outdatedRecipe.title = e.target.value
     this.setState({recipe:outdatedRecipe})
 
-  }
+  } else if (e.target.id === "img") {
+  outdatedRecipe.img = e.target.value
+  this.setState({recipe:outdatedRecipe})
+
+}
 }
 
 hc = this.handleChange.bind(this)
@@ -83,6 +87,7 @@ hc = this.handleChange.bind(this)
       title: this.state.recipe.title,
       ingredients: this.state.recipe.ingredients,
       steps: this.state.recipe.steps,
+      img: this.state.recipe.img,
       _id: this.state.recipe._id!,
     }
     
@@ -106,6 +111,8 @@ hc = this.handleChange.bind(this)
           <DialogContentText>
             {this.description[this.props.mode]}
           </DialogContentText>
+          {(() => {if (this.props.mode == "view") return <Image showLoading={true} src={this.state.recipe.img!}/>})()}
+
           <TextField
             autoFocus
             margin="dense"
@@ -118,6 +125,20 @@ hc = this.handleChange.bind(this)
             onChange={this.hc}
             variant="standard"
           />
+          { ( () => {if (this.props.mode != "view") return <TextField
+            autoFocus
+            margin="dense"
+            id="img"
+            label="Url Imagen"
+            type="url"
+            disabled={disabled}
+            fullWidth
+            value={this.state.recipe.img}
+            onChange={this.hc}
+            variant="standard"
+          />
+          }) ()
+                    }
           <TextField
             autoFocus
             margin="dense"

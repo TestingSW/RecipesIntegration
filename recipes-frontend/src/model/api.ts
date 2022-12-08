@@ -18,7 +18,8 @@ class Api {
         var recipeData = {
             title: recipe.title,
             steps: recipe.steps,
-            ingredients: recipe.ingredients
+            ingredients: recipe.ingredients,
+            img: recipe.img
         };
 
         fetch('http://localhost:9000/api/recipe/', {
@@ -41,7 +42,8 @@ class Api {
         var recipeData = {
             title: recipe.title,
             steps: recipe.steps,
-            ingredients: recipe.ingredients
+            ingredients: recipe.ingredients,
+            img: recipe.img
         };
 
         fetch('http://localhost:9000/api/recipe/' + recipe._id, {

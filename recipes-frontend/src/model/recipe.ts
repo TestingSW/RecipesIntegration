@@ -7,7 +7,7 @@ class Recipe {
         this.name = object.title;
         this.steps = object.steps;
         this.ingredients = object.ingredients;
-        this.img = object.photo!;
+        this.img = object.img!;
 
     }
     name:String;
