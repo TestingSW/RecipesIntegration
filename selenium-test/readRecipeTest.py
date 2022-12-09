@@ -7,11 +7,23 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-PATH = "C:\Program Files (x86)\chromedriver.exe"
-driver = webdriver.Chrome(PATH)
-
+#### Remoto
+chrome_options = webdriver.ChromeOptions()
+driver = webdriver.Remote(
+    command_executor='https://6ca0-200-104-235-124.sa.ngrok.io/',
+    options=chrome_options
+)
 driver.get("http://localhost:3000")
 print(driver.title)
+#####
+
+
+####Local
+# PATH = "C:\Program Files (x86)\chromedriver.exe"
+# driver = webdriver.Chrome(PATH)
+# driver.get("http://localhost:3000")
+# print(driver.title)
+#####
 
 #Caso de uso: Editar receta de manera exitosa
 try:
