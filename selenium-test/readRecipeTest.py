@@ -33,19 +33,20 @@ try:
     updateTable = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "updateList"))
     )
+    updateTable.click()
+    time.sleep(2)
+    
     recipes = driver.find_elements(By.TAG_NAME, "li")
 
     foundR = False
-    for recipe in recipes {
-        if recipe.text == "Pan con mantequilla"
-        recipe.click()
-        time.sleep(2)
-        foundR = True
-        break
-    }
-
-    if (!foundR) throw "Receta no encontrada" 
-
+    for recipe in recipes:
+        if recipe.text == "Pan con mantequilla":
+            recipe.click()
+            time.sleep(2)
+            foundR = True
+            break
+        
+    
 except Exception as e:
     print("Error!", e)
     driver.quit()
