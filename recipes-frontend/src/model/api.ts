@@ -7,7 +7,7 @@ class Api {
         // void
     }
     static async getRecipes() {
-        var recipes:[recipe] = await fetch("http://localhost:9000/api/recipe/").then((res) => {
+        var recipes:[recipe] = await fetch("http://192.168.100.168:9000/api/recipe/").then((res) => {
             return res.json()
         }).then(data => data.body, data => [])
         console.log(recipes)
@@ -22,7 +22,7 @@ class Api {
             img: recipe.img
         };
 
-        fetch('http://localhost:9000/api/recipe/', {
+        fetch('http://192.168.100.168:9000/api/recipe/', {
             method: 'POST', // or 'PUT'
             headers: {
               'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ class Api {
             img: recipe.img
         };
 
-        fetch('http://localhost:9000/api/recipe/' + recipe._id, {
+        fetch('http://192.168.100.168:9000/api/recipe/' + recipe._id, {
             method: 'put', // or 'PUT'
             headers: {
               'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ class Api {
 
     static async deleteRecipe(id:string) {
 
-        fetch('http://localhost:9000/api/recipe/' + id, {
+        fetch('http://192.168.100.168:9000/api/recipe/' + id, {
             method: 'DELETE', // or 'PUT'
           })
             .then((response) => response.json())
