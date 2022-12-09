@@ -4,6 +4,8 @@
 * nodejs
 * express
 * mongoDB
+* react
+* Selenium
 
 
 * Para Levantar backend:
