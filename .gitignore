@@ -126,3 +126,4 @@ bundles/
 vendor/pkg/
 pyenv
 Vagrantfile
+recipes-frontend/build
