@@ -9,8 +9,9 @@ import time
 
 #### Remoto
 chrome_options = webdriver.ChromeOptions()
+chrome_options.set_capability("platformName", "MAC")
 driver = webdriver.Remote(
-    command_executor='https://6ca0-200-104-235-124.sa.ngrok.io/',
+    command_executor='http://192.168.100.168:4444',
     options=chrome_options
 )
 driver.get("http://localhost:3000")
